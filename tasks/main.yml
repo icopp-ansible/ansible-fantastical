@@ -1,0 +1,13 @@
+---
+- name: Install Fantastical via Mac App Store
+  command: mas install "{{ item.id }}"
+  args:
+    creates: /Applications/{{ item.name }}.app
+  with_items:
+    - { id: 975937182, name: "Fantastical 2" }
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == true
+
+- name: Install Fantastical via Homebrew
+  homebrew_cask:
+    name: fantastical
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == false
